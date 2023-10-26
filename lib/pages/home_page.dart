@@ -22,8 +22,21 @@ class _HomePageState extends State<HomePage> {
         // USER INPUT
         content: TextField(
           controller: textController,
+          decoration: const InputDecoration(
+            hintText: 'Enter note',
+          ),
         ),
         actions: [
+          ElevatedButton(
+            onPressed: () {
+              // CLEAR TEXT
+              //textController.clear();
+              // ?
+              // CLOSE BOX
+              Navigator.pop(context);
+            },
+            child: const Text('Cancel'),
+          ),
           // SAVE BUTTON
           ElevatedButton(
             onPressed: () {
@@ -63,7 +76,7 @@ class _HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           // GET DATA IN FIREBASE
           if (snapshot.hasData) {
-            List notesList = snapshot.data!.docs;
+            List notesList = snapshot.data?.docs ?? [];
             // DISPLAY AS LIST
             return ListView.builder(
               itemCount: notesList.length,
@@ -87,7 +100,7 @@ class _HomePageState extends State<HomePage> {
                       // UPDATE BUTTON
                       IconButton(
                         onPressed: () => openNoteBox(docID: docID),
-                        icon: const Icon(Icons.settings),
+                        icon: const Icon(Icons.edit),
                       ),
                       // DELETE BUTTON
                       IconButton(
