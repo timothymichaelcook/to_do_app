@@ -61,27 +61,35 @@ class _HomePageState extends State<HomePage> {
       body: StreamBuilder<QuerySnapshot>(
         stream: firestoreService.getNotesStream(),
         builder: (context, snapshot) {
+          // GET DATA IN FIREBASE
           if (snapshot.hasData) {
             List notesList = snapshot.data!.docs;
+            // DISPLAY AS LIST
             return ListView.builder(
               itemCount: notesList.length,
               itemBuilder: (context, index) {
+                // GET DOC
                 DocumentSnapshot document = notesList[index];
                 String docID = document.id;
 
+                // GET NOTE FROM DOC
                 Map<String, dynamic> data =
                     document.data() as Map<String, dynamic>;
                 String noteText = data['note'];
 
+                // DISPLAY AS LIST TILE
                 return ListTile(
                   title: Text(noteText),
+                  // LIST ROW
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      // UPDATE BUTTON
                       IconButton(
                         onPressed: () => openNoteBox(docID: docID),
                         icon: const Icon(Icons.settings),
                       ),
+                      // DELETE BUTTON
                       IconButton(
                         onPressed: () => firestoreService.deleteNote(docID),
                         icon: const Icon(Icons.delete),
@@ -92,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               },
             );
           } else {
-            return const Text('No notes...');
+            return const Text('');
           }
         },
       ),
